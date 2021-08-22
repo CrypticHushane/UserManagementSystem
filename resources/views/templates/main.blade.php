@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home </a>
+                    <a class="nav-link" href="/">Home </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Users</a>
@@ -39,10 +39,15 @@
             </ul>
             <div class="float-right">
                 @if (Route::has('login'))
-                @auth
-                    <a href="{{ url('/home') }}" class="text-sm text-gray-700 underline">Home</a>
+
+                
                 <div class="form-inline my-2 my-lg-0">
-                    
+                    @auth
+                        <a href="{{ url('/') }}" class="text-sm text-gray-700 underline">Home</a>
+                        <a href="{{ route('logout') }}" class="text-sm text-gray-700 underline" onclick="event.preventDefault(); 
+                            document.getElementById('logout-form').submit()">Logout</a>
+
+                        <form id="logout-form" action="{{ route('logout')}}" method="POST" style="display: none">@csrf</form>
                     @else
                     <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
 
@@ -56,7 +61,7 @@
         </div>
     </nav>
 
-    <main class="container">
+    <main class="container mx-auto">
         @yield('content')
     </main>
 </body>
