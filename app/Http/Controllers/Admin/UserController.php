@@ -20,7 +20,7 @@ class UserController extends Controller
         // return view('admin.users.index', compact('users'));
 
         return view('admin.users.index', [
-            'users' => User::with('roles')->get(),
+            'users' => User::with('roles')->paginate(10),
         ]);
     }
 
@@ -87,9 +87,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect()->route('admin.users.index', [
-            'users' => User::with('roles')->get(),
-        ]);
+        User::destroy($id);
+        return redirect()->route('admin.users.index');
     }
 }
