@@ -10870,3 +10870,13 @@ body {
   background-color: #f7f8f9;
   color: #3A3C42;
 }
+
+h1, .h1 {
+  margin-bottom: 30px;
+  margin-top: 10px;
+}
+
+.card {
+  box-shadow: 0 2px 4px rgba(204, 204, 204, 0.8);
+  padding: 20px 40px;
+}
