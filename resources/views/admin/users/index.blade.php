@@ -26,9 +26,16 @@
                             <th scope="row">{{$user->id}}</th>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
-                            @foreach ($user->roles as $roles)
-                                <td>{{$roles->name}}</td>
-                            @endforeach
+                            @if (count($user->roles) != 0)
+                                <td>
+                                @foreach ($user->roles as $roles)
+                                        {{$roles->name}}
+                                    @endforeach 
+                                </td>
+                            @else
+                            <td>No Role Assigned</td>
+                            @endif
+                            
                             <td>
                                 <a href="{{route('admin.users.edit', $user->id )}}" class="btn btn-sm btn-primary mr-5" role="button">Edit</a>
                                 <button href="{{ route('logout') }}" class="btn btn-sm btn-danger" onclick="event.preventDefault(); 
@@ -43,6 +50,7 @@
                     @endforeach
                 </tbody>
               </table>
+              {{$users->links()}}
         </div>
     </div>
 @endsection
