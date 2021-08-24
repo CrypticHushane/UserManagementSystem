@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 
 class UserController extends Controller
 {
@@ -31,7 +32,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.users.create', [
+            'roles' => Role::all()
+        ]);
     }
 
     /**
@@ -42,7 +45,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'email' => 'required|email',
+         ]);
+
+         $userData = [
+            'email' => $request->email,
+            'name' => $request->name,
+            'password' => bcrypt($request->password),
+        ];
+
+        $newUser = User::create($request->except(['_token','role']));
+        $assignRole = $newUser->roles()->attach($request->role);
+
+        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -64,7 +80,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        dd(User::find($id));
+        // dd(User::find($id)->roles());
+        
+        return view('admin.users.edit ', [
+            'roles' => Role::all(),
+            'user' => User::find($id), 
+        ]);
+        
     }
 
     /**
@@ -76,7 +98,11 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->update($request->except(['_token','role']));
+        $user->roles()->sync($request->role);
+        $user->save();
+        return redirect()->route('admin.users.index');
     }
 
     /**
